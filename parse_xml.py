@@ -9,7 +9,7 @@ def parse_xml_to_json(xml_file_path):
     # Create a temporary file for JSON output
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as json_file:
         json_file_path = json_file.name
-
+        # for this section this will be unique to your xml file. Please change the tag and column data to match the output of your xml to properly parse through it. recommend using chatgpt or another ai platform if you're uncomfortable extracting tags and mapping the columns.
         context = etree.iterparse(xml_file_path, events=(
             'end',), tag='job')  # Focus on the 'job' tag
         processed = 0
@@ -17,21 +17,7 @@ def parse_xml_to_json(xml_file_path):
             job_data = {
                 'location': elem.findtext('location'),
                 'title': elem.findtext('title'),
-                'city': elem.findtext('city'),
-                'state': elem.findtext('state'),
-                'zip': elem.findtext('zip'),
-                'country': elem.findtext('country'),
-                'job_type': elem.findtext('job_type'),
-                'posted_at': elem.findtext('posted_at'),
-                'job_reference': elem.findtext('job_reference'),
-                'company': elem.findtext('company'),
-                'mobile_friendly_apply': elem.findtext('mobile_friendly_apply'),
-                'category': elem.findtext('category'),
-                'html_jobs': elem.findtext('html_jobs'),
-                'url': elem.findtext('url'),
-                'body': elem.findtext('body'),
-                'cpa': elem.findtext('cpa'),
-                'cpc': elem.findtext('cpc')
+                # continue with xml column mapping
             }
             # Handle missing elements or cleanup
             job_data = {k: (v.strip() if v else '')
