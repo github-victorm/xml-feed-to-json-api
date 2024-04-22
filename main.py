@@ -18,7 +18,6 @@ PASSWORD = os.environ.get('AUTH_PASSWORD', 'password')
 
 # URLs for external resources
 XANO_URL = os.environ.get('XANO_URL', 'https://your-default-xano-url.com')
-XANO_KEY = os.environ.get('XANO_KEY', 'xano_key')
 XML_FILE_URL = os.environ.get('XML_FILE_URL', 'https://default-xml-url.com')
 
 
@@ -30,23 +29,36 @@ def verify_password(username, password):
 @app.route('/trigger', methods=['POST'])
 @auth.login_required
 def trigger():
-    logging.info("Trigger function started")
-    decompressed_file = download_and_decompress.download_and_decompress(
-        XML_FILE_URL)
-    logging.info(f"Decompressed file: {decompressed_file}")
-    json_file_path = parse_xml.parse_xml_to_json(decompressed_file)
-    logging.info(f"JSON file path: {json_file_path}")
-    send_jobs_to_xano.send_jobs_in_chunks(json_file_path)
-    logging.info("Jobs sent to Xano")
+    logging.info("XML to JSON API function started")
 
-    # Clean up temporary files
-    if decompressed_file:
-        os.remove(decompressed_file)
-    if json_file_path:
-        os.remove(json_file_path)
+    # Send an immediate response
+    response = "XML to JSON API triggered!"
+    logging.info(response)
 
-    logging.info("Trigger function completed")
-    return "Code execution triggered successfully!"
+    # Start the processing tasks in the background
+    def process_xml_feed():
+        decompressed_file = download_and_decompress.download_and_decompress(
+            XML_FILE_URL)
+        logging.info(f"Decompressed file: {decompressed_file}")
+        json_file_path = parse_xml.parse_xml_to_json(decompressed_file)
+        logging.info(f"JSON file path: {json_file_path}")
+        send_jobs_to_xano.send_jobs_in_chunks(json_file_path)
+        logging.info("Jobs sent to Xano")
+
+        # Clean up temporary files
+        if decompressed_file:
+            os.remove(decompressed_file)
+        if json_file_path:
+            os.remove(json_file_path)
+
+        logging.info("XML to JSON API function completed")
+
+    # Run the processing tasks in a separate thread
+    import threading
+    thread = threading.Thread(target=process_xml_feed)
+    thread.start()
+
+    return response
 
 
 if __name__ == "__main__":
