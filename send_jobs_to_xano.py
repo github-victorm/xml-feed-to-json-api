@@ -14,6 +14,7 @@ headers = {
     'x-api-key': api_key
     }
 
+# I created these exclusions to prefilter some undesirable job titles from the feed we are working with. feel free to apply exclusions to your fields using the same logic.
 # Job title exclusions (lowercased for case-insensitive matching)
 exclusions = [
     "delivery driver", "cashier", "barista", "waiter", "waitress",
@@ -40,7 +41,6 @@ def send_jobs_in_chunks(json_file_path, chunk_size=1500, max_chunks=3000):
                 if job_title_excluded(job["title"]):
                     continue
                 # Check other filters like URL exclusions here, if needed
-                # Example: if "exch=23" in job["url"]: continue
                 jobs.append(job)
                 # Send chunks of jobs
                 if len(jobs) == chunk_size:
