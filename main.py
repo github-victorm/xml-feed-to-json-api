@@ -18,6 +18,7 @@ PASSWORD = os.environ.get('AUTH_PASSWORD', 'password')
 
 # URLs for external resources
 XANO_URL = os.environ.get('XANO_URL', 'https://your-default-xano-url.com')
+XANO_KEY = os.environ.get('XANO_KEY', 'xano_key')
 XML_FILE_URL = os.environ.get('XML_FILE_URL', 'https://default-xml-url.com')
 
 
