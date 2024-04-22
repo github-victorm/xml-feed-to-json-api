@@ -10,8 +10,8 @@ import logging
 def download_and_decompress(xml_file_url):
     # Create temporary file paths
     temp_dir = tempfile.gettempdir()
-    compressed_filename = os.path.join(temp_dir, "appcast_feed")
-    decompressed_filename = os.path.join(temp_dir, "appcast_feed.xml")
+    compressed_filename = os.path.join(temp_dir, "compressed_xml_feed")
+    decompressed_filename = os.path.join(temp_dir, "decompressed_feed.xml")
 
     # Download the file
     logging.info("Downloading the file...")
